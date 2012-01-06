@@ -1,8 +1,8 @@
 package de.jbee.earthworm.data;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+
+import de.jbee.lang.Set;
 
 public class Data {
 
@@ -13,28 +13,49 @@ public class Data {
 		return (IData<T>) EMPTY;
 	}
 
-	static final class HashData<T>
-			implements IData<T> {
+	static final class Property {
 
-		private final String name;
-		private final Class<T> type;
-		private final Map<String, IData<?>> subs = new HashMap<String, IData<?>>();
-		private final Map<String, Object> values = new HashMap<String, Object>();
+		final String name;
+		final Object value;
 
-		HashData( String name, Class<T> type ) {
+		Property( String name, Object value ) {
 			super();
 			this.name = name;
-			this.type = type;
+			this.value = value;
 		}
 
-		@SuppressWarnings ( "unchecked" )
+	}
+
+	/**
+	 * <pre>
+	 * .class CDBox
+	 * disc1..class CD
+	 * disc1.title 'Worst of ... CD1'
+	 * </pre>
+	 * 
+	 * @author Jan Bernitt (jan.bernitt@gmx.de)
+	 * 
+	 */
+	static final class ObjectData<T>
+			implements IData<T> {
+
+		private final String prefix;
+		private final int start;
+		private final int end;
+		private final Set<Property> properties;
+
+		ObjectData( String prefix, int start, int end, Set<Property> properties ) {
+			super();
+			this.prefix = prefix;
+			this.start = start;
+			this.end = end;
+			this.properties = properties;
+		}
+
 		@Override
 		public <S> IData<S> sub( IDataPath<? super T, S> path ) {
-			//FIXME S kann ja auch ein unterobjekt eines direkten subs sein - man muss also an den path delegieren und dieser dann zurück usw. 
-			IData<?> subdata = subs.get( path.name() );
-			return (IData<S>) ( subdata == null
-				? Data.empty()
-				: subdata );
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 		@Override

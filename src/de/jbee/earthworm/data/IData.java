@@ -13,11 +13,9 @@ public interface IData<T>
 
 	boolean isEmpty();
 
-	//public static int
-
 	public static interface IPath<R, T> {
 
-		String name();
+		String name(); //OPEN vielleicht so bauen, dass der ListPath hier überschreiben kann um irgendwie eine Sequenz der einzelnen Namen zu liefern
 	}
 
 	public static interface IPseudoPath<R, T> {
@@ -29,7 +27,7 @@ public interface IData<T>
 	public static interface IListPath<R, T>
 			extends IDataPath<R, T> {
 
-		IDataPath<R, T> first();
+		IDataPath<R, T> head();
 
 		IDataPath<R, T> at( int index );
 

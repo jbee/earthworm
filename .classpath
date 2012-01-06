@@ -5,5 +5,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="draft"/>
 	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jadamant"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
