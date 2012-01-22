@@ -14,7 +14,7 @@ public class Label<T>
 
 	@Override
 	public void prepare( IPreparationCycle<? extends T> cycle ) {
-		cycle.dynamic( valuePath );
+		cycle.variable( valuePath );
 	}
 
 }

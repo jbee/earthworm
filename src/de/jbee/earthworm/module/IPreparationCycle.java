@@ -7,7 +7,7 @@ public interface IPreparationCycle<T> {
 
 	void constant( CharSequence markup );
 
-	void dynamic( IValuePath<? super T, ? extends CharSequence> path );
+	void variable( IValuePath<? super T, ? extends CharSequence> path );
 
 	<V> void prepare( IDataPath<? super T, V> path, IComponent<V> part );
 

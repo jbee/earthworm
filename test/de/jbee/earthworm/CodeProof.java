@@ -75,9 +75,9 @@ public class CodeProof {
 
 		@Override
 		public void prepare( IPreparationCycle<? extends Track> cycle ) {
-			cycle.dynamic( Track.title );
+			cycle.variable( Track.title );
 			IPreparationCycle<Artist> artists = cycle.in( Container.repeats( Track.artists ) );
-			artists.in( Container.<Artist> recoversByStrippingOut() ).dynamic( Artist.name );
+			artists.in( Container.<Artist> recoversByStrippingOut() ).variable( Artist.name );
 		}
 	}
 

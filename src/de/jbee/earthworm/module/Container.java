@@ -17,10 +17,10 @@ public class Container {
 	}
 
 	public static <T> IContainer<T, T> recoversByStrippingOut() {
-		return recovers( RecoveryStrategy.stripOut() );
+		return recoversBy( RecoveryStrategy.stripOut() );
 	}
 
-	public static <T> IContainer<T, T> recovers( IRecoveryStrategy strategy ) {
+	public static <T> IContainer<T, T> recoversBy( IRecoveryStrategy strategy ) {
 		return new ExceptionRecoveringContainer<T>( strategy );
 	}
 

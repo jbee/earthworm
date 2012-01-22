@@ -22,7 +22,7 @@ public final class PreparationCycle<T>
 	}
 
 	@Override
-	public void dynamic( IValuePath<? super T, ? extends CharSequence> path ) {
+	public void variable( IValuePath<? super T, ? extends CharSequence> path ) {
 		append( Markup.dynamic( path ) );
 	}
 

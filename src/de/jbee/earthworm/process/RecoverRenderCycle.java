@@ -90,13 +90,13 @@ public class RecoverRenderCycle
 	}
 
 	private void recoverFrom( Exception e ) {
-		RenderException re = new RenderException( e, hierarchy.toArray() );
+		RenderException exception = new RenderException( e, hierarchy.toArray() );
 		Iterator<IRecoveryStrategy> i = strategies.iterator();
-		while ( !re.isResolved() && i.hasNext() ) {
-			i.next().recoverFrom( re, this );
+		while ( !exception.isResolved() && i.hasNext() ) {
+			i.next().recoverFrom( exception, this );
 		}
-		if ( !re.isResolved() ) {
-			throw re;
+		if ( !exception.isResolved() ) {
+			throw exception;
 		}
 	}
 

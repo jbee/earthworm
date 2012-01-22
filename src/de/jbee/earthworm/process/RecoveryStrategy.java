@@ -7,13 +7,18 @@ public final class RecoveryStrategy {
 	}
 
 	public static IRecoveryStrategy stripOut() {
-		return new StripStreamRecoveryStrategy();
+		return new StreamStrippingRecoveryStrategy();
 	}
 
-	static final class StripStreamRecoveryStrategy
+	/**
+	 * Removes those parts of the stream rendered by the faulty element (and maybe their parents).
+	 * 
+	 * @author Jan Bernitt (jan.bernitt@gmx.de)
+	 */
+	static final class StreamStrippingRecoveryStrategy
 			implements IRecoveryStrategy {
 
-		private StreamMarker start;
+		private StreamMark start;
 
 		@Override
 		public void establish( IControlCycle cycle ) {

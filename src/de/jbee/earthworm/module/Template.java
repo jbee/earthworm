@@ -133,7 +133,7 @@ public class Template<T>
 
 		@Override
 		public void prepare( IPreparationCycle<? extends T> cycle ) {
-			cycle.dynamic( path );
+			cycle.variable( path );
 		}
 
 	}
