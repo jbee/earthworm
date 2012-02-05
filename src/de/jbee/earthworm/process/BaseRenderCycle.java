@@ -90,11 +90,4 @@ public class BaseRenderCycle
 		throw new UnsupportedOperationException( message );
 	}
 
-	@Override
-	public int counter( int depth ) {
-		return depth >= counters.size()
-			? 0
-			: counters.get( depth );
-	}
-
 }

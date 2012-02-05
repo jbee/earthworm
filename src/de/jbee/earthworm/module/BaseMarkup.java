@@ -15,17 +15,8 @@ public final class BaseMarkup {
 
 	public static final RenderInstructor<Object> EMPTY = new EmptyMarkup();
 
-	public static <T> RenderInstructor<T> dynamic(
-			ValuePath<? super T, ? extends CharSequence> path ) {
+	public static <T> RenderInstructor<T> dynamic( ValuePath<? super T, ? extends CharSequence> path ) {
 		return new DynamicMarkup<T>( path );
-	}
-
-	public static RenderInstructor<Object> counter( int depth ) {
-		return counter( depth, 0 );
-	}
-
-	public static RenderInstructor<Object> counter( int depth, int offset ) {
-		return new CounterMarkup( depth, offset );
 	}
 
 	public static RenderInstructor<Object> constant( CharSequence markup ) {
@@ -116,25 +107,6 @@ public final class BaseMarkup {
 		@Override
 		public String toString() {
 			return "{" + path.toString() + "}";
-		}
-	}
-
-	//TODO the hole counter thing seams not to be so clever - just a small thing to have the counter value rendered
-	static final class CounterMarkup
-			extends DirectRenderingMarkup<Object> {
-
-		private final int depth;
-		private final int offset;
-
-		CounterMarkup( int depth, int offset ) {
-			super();
-			this.depth = depth;
-			this.offset = offset;
-		}
-
-		@Override
-		public void render( Data<? extends Object> data, MarkupCycle cycle ) {
-			cycle.stream().append( String.valueOf( cycle.counter( depth ) + offset ) );
 		}
 	}
 

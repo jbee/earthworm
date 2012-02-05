@@ -100,9 +100,4 @@ public class RecoverRenderCycle
 		}
 	}
 
-	@Override
-	public int counter( int depth ) {
-		return cycle.counter( depth );
-	}
-
 }

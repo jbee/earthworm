@@ -9,7 +9,5 @@ public interface RenderCycle {
 
 	<T, V> V read( Data<? extends T> data, ValuePath<? super T, ? extends V> path );
 
-	int counter( int depth );
-
 	RenderStream stream();
 }
