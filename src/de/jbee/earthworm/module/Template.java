@@ -6,9 +6,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import de.jbee.earthworm.data.Data.DataPath;
-import de.jbee.earthworm.data.Data.ListPath;
-import de.jbee.earthworm.data.Data.ValuePath;
+import de.jbee.earthworm.data.Path.DataPath;
+import de.jbee.earthworm.data.Path.ListPath;
+import de.jbee.earthworm.data.Path.ValuePath;
 
 public class Template<T>
 		implements Component<T> {

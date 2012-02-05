@@ -1,7 +1,7 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.earthworm.data.Data.DataPath;
-import de.jbee.earthworm.data.Data.ValuePath;
+import de.jbee.earthworm.data.Path.DataPath;
+import de.jbee.earthworm.data.Path.ValuePath;
 
 public interface PreparationCycle<T> {
 

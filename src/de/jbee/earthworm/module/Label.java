@@ -1,6 +1,6 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.earthworm.data.Data.ValuePath;
+import de.jbee.earthworm.data.Path.ValuePath;
 
 public class Label<T>
 		implements Component<T> {

@@ -1,9 +1,9 @@
 package de.jbee.earthworm.module;
 
 import de.jbee.earthworm.data.Data;
-import de.jbee.earthworm.data.Data.DataPath;
-import de.jbee.earthworm.data.Data.ListPath;
-import de.jbee.earthworm.data.Data.ValuePath;
+import de.jbee.earthworm.data.Path.DataPath;
+import de.jbee.earthworm.data.Path.ListPath;
+import de.jbee.earthworm.data.Path.ValuePath;
 import de.jbee.earthworm.process.ControlCycle;
 import de.jbee.earthworm.process.MarkupCycle;
 

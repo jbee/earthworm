@@ -1,7 +1,7 @@
 package de.jbee.earthworm.process;
 
 import de.jbee.earthworm.data.Data;
-import de.jbee.earthworm.data.Data.ValuePath;
+import de.jbee.earthworm.data.Path.ValuePath;
 
 public interface RenderCycle {
 

@@ -2,6 +2,10 @@ package de.jbee.earthworm.data;
 
 import java.util.Collections;
 
+import de.jbee.earthworm.data.Path.DataPath;
+import de.jbee.earthworm.data.Path.ListPath;
+import de.jbee.earthworm.data.Path.NotionalPath;
+import de.jbee.earthworm.data.Path.ValuePath;
 import de.jbee.lang.Set;
 
 public class BaseData {

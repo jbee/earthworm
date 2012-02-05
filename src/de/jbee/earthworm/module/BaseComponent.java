@@ -1,7 +1,7 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.earthworm.data.Data.DataPath;
-import de.jbee.earthworm.data.Data.ListPath;
+import de.jbee.earthworm.data.Path.DataPath;
+import de.jbee.earthworm.data.Path.ListPath;
 
 public final class BaseComponent {
 

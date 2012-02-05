@@ -1,10 +1,10 @@
 package de.jbee.earthworm.module;
 
 import de.jbee.earthworm.data.Data;
-import de.jbee.earthworm.data.Data.ListPath;
+import de.jbee.earthworm.data.Path.ListPath;
+import de.jbee.earthworm.process.BaseRecoveryStrategy;
 import de.jbee.earthworm.process.ControlCycle;
 import de.jbee.earthworm.process.RecoveryStrategy;
-import de.jbee.earthworm.process.BaseRecoveryStrategy;
 
 public class BaseContainer {
 

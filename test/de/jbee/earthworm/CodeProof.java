@@ -1,15 +1,15 @@
 package de.jbee.earthworm;
 
-import de.jbee.earthworm.data.Data.DataPath;
-import de.jbee.earthworm.data.Data.ListPath;
-import de.jbee.earthworm.data.Data.ValuePath;
+import de.jbee.earthworm.data.Path.DataPath;
+import de.jbee.earthworm.data.Path.ListPath;
+import de.jbee.earthworm.data.Path.ValuePath;
 import de.jbee.earthworm.module.Attribute;
 import de.jbee.earthworm.module.BaseComponent;
 import de.jbee.earthworm.module.BaseContainer;
 import de.jbee.earthworm.module.Component;
+import de.jbee.earthworm.module.Label;
 import de.jbee.earthworm.module.PreparationCycle;
 import de.jbee.earthworm.module.Tag;
-import de.jbee.earthworm.module.Label;
 import de.jbee.earthworm.module.Template;
 
 public class CodeProof {

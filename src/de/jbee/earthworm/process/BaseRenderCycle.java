@@ -3,11 +3,11 @@ package de.jbee.earthworm.process;
 import java.util.LinkedList;
 
 import de.jbee.earthworm.data.Data;
-import de.jbee.earthworm.data.Data.ValuePath;
+import de.jbee.earthworm.data.Path.ValuePath;
+import de.jbee.earthworm.module.BaseMarkup;
 import de.jbee.earthworm.module.Conditional;
 import de.jbee.earthworm.module.Markup;
 import de.jbee.earthworm.module.RenderInstructor;
-import de.jbee.earthworm.module.BaseMarkup;
 
 public class BaseRenderCycle
 		implements MarkupCycle, ControlCycle {
