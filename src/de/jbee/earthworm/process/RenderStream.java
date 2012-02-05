@@ -1,6 +1,6 @@
 package de.jbee.earthworm.process;
 
-public interface IRenderStream {
+public interface RenderStream {
 
 	StreamMark mark();
 

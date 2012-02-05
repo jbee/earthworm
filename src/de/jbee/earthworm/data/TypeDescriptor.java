@@ -1,6 +1,6 @@
 package de.jbee.earthworm.data;
 
-public interface ITypeDescriptor<T> {
+public interface TypeDescriptor<T> {
 
 	String name();
 

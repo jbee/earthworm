@@ -1,14 +1,14 @@
 package de.jbee.earthworm;
 
-import de.jbee.earthworm.data.IData.IDataPath;
-import de.jbee.earthworm.data.IData.IListPath;
-import de.jbee.earthworm.data.IData.IValuePath;
-import de.jbee.earthworm.module.Attr;
+import de.jbee.earthworm.data.Data.DataPath;
+import de.jbee.earthworm.data.Data.ListPath;
+import de.jbee.earthworm.data.Data.ValuePath;
+import de.jbee.earthworm.module.Attribute;
+import de.jbee.earthworm.module.BaseComponent;
+import de.jbee.earthworm.module.BaseContainer;
 import de.jbee.earthworm.module.Component;
-import de.jbee.earthworm.module.Container;
-import de.jbee.earthworm.module.IComponent;
-import de.jbee.earthworm.module.IPreparationCycle;
-import de.jbee.earthworm.module.ITag;
+import de.jbee.earthworm.module.PreparationCycle;
+import de.jbee.earthworm.module.Tag;
 import de.jbee.earthworm.module.Label;
 import de.jbee.earthworm.module.Template;
 
@@ -16,33 +16,33 @@ public class CodeProof {
 
 	static interface Album {
 
-		IValuePath<Album, String> title = null;
-		IValuePath<Album, Boolean> ep = null;
-		IListPath<Album, Track> tracks = null;
-		IDataPath<Album, Track> hiddenTrack = null;
+		ValuePath<Album, String> title = null;
+		ValuePath<Album, Boolean> ep = null;
+		ListPath<Album, Track> tracks = null;
+		DataPath<Album, Track> hiddenTrack = null;
 	}
 
 	static interface CdBox
 			extends Album {
 
-		IValuePath<CdBox, String> subtitle = null;
+		ValuePath<CdBox, String> subtitle = null;
 	}
 
 	static interface Track {
 
-		IValuePath<Track, Integer> number = null;
-		IValuePath<Track, String> title = null;
-		IValuePath<Track, Long> length = null;
-		IListPath<Track, Artist> artists = null;
+		ValuePath<Track, Integer> number = null;
+		ValuePath<Track, String> title = null;
+		ValuePath<Track, Long> length = null;
+		ListPath<Track, Artist> artists = null;
 	}
 
 	static interface Artist {
 
-		IValuePath<Artist, String> name = null;
+		ValuePath<Artist, String> name = null;
 	}
 
 	static enum MyTemplateTags
-			implements ITag {
+			implements Tag {
 		hiddenTrack,
 		foo,
 		tracks,
@@ -50,16 +50,16 @@ public class CodeProof {
 	}
 
 	static class MyPage
-			implements IComponent<CdBox> {
+			implements Component<CdBox> {
 
 		@Override
-		public void prepare( IPreparationCycle<? extends CdBox> cycle ) {
+		public void prepare( PreparationCycle<? extends CdBox> cycle ) {
 			Template<Album> t = new Template<Album>();
-			t.bind( Attr.name, Album.title );
+			t.bind( Attribute.name, Album.title );
 			t.the( MyTemplateTags.hiddenTrack ).using( Album.hiddenTrack ).is( new TrackRow() );
-			t.the( MyTemplateTags.foo ).is( Component.markup( "get out" ) );
+			t.the( MyTemplateTags.foo ).is( BaseComponent.markup( "get out" ) );
 			t.the( MyTemplateTags.ep ).dependsOn( Album.ep ).is(
-					Component.markup( "This is a EP Album" ) );
+					BaseComponent.markup( "This is a EP Album" ) );
 			t.the( MyTemplateTags.tracks ).listing( Album.tracks ).is( TrackRow.class,
 					TrackRow.class );
 			t.prepare( cycle );
@@ -71,13 +71,13 @@ public class CodeProof {
 	}
 
 	static class TrackRow
-			implements IComponent<Track> {
+			implements Component<Track> {
 
 		@Override
-		public void prepare( IPreparationCycle<? extends Track> cycle ) {
+		public void prepare( PreparationCycle<? extends Track> cycle ) {
 			cycle.variable( Track.title );
-			IPreparationCycle<Artist> artists = cycle.in( Container.repeats( Track.artists ) );
-			artists.in( Container.<Artist> recoversByStrippingOut() ).variable( Artist.name );
+			PreparationCycle<Artist> artists = cycle.in( BaseContainer.repeats( Track.artists ) );
+			artists.in( BaseContainer.<Artist> recoversByStrippingOut() ).variable( Artist.name );
 		}
 	}
 

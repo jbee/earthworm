@@ -4,45 +4,45 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.jbee.earthworm.data.IData;
-import de.jbee.earthworm.data.IData.IValuePath;
-import de.jbee.earthworm.module.IConditional;
-import de.jbee.earthworm.module.IMarkup;
-import de.jbee.earthworm.module.IRenderInstructor;
+import de.jbee.earthworm.data.Data;
+import de.jbee.earthworm.data.Data.ValuePath;
+import de.jbee.earthworm.module.Conditional;
+import de.jbee.earthworm.module.Markup;
+import de.jbee.earthworm.module.RenderInstructor;
 
 public class RecoverRenderCycle
-		implements IControlCycle {
+		implements ControlCycle {
 
 	//TODO der cycle könnte evtl. auswerten ob neue recover startegien gesetzt wurden, seit dem letzten aktivieren try-catch
 	// dann ist es glaube ich nutzlos ein weiteres darum zu wickeln bzw. kommt drauf an, ob man immer möglicht bald recovern will
 
-	private final List<IRecoveryStrategy> strategies = new LinkedList<IRecoveryStrategy>();
+	private final List<RecoveryStrategy> strategies = new LinkedList<RecoveryStrategy>();
 	private final LinkedList<Object> hierarchy = new LinkedList<Object>();
 
-	private final IControlCycle cycle;
+	private final ControlCycle cycle;
 
-	RecoverRenderCycle( IControlCycle cycle ) {
+	RecoverRenderCycle( ControlCycle cycle ) {
 		super();
 		this.cycle = cycle;
 	}
 
 	@Override
-	public <T> void instruct( IData<T> data, IRenderInstructor<? super T> content,
-			IRecoveryStrategy strategy ) {
+	public <T> void instruct( Data<T> data, RenderInstructor<? super T> content,
+			RecoveryStrategy strategy ) {
 		strategies.add( 0, strategy );
 		instruct( data, content );
 		strategies.remove( strategy );
 	}
 
 	@Override
-	public <T> void guard( IData<T> data, IConditional<? super T> condition,
-			IRenderInstructor<? super T> then ) {
+	public <T> void guard( Data<T> data, Conditional<? super T> condition,
+			RenderInstructor<? super T> then ) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public <T> void instruct( IData<T> data, IRenderInstructor<? super T> content ) {
+	public <T> void instruct( Data<T> data, RenderInstructor<? super T> content ) {
 		hierarchy.addLast( content );
 		try {
 			cycle.instruct( data, content );
@@ -53,29 +53,29 @@ public class RecoverRenderCycle
 	}
 
 	@Override
-	public <T, V> V read( IData<? extends T> data, IValuePath<? super T, ? extends V> path ) {
+	public <T, V> V read( Data<? extends T> data, ValuePath<? super T, ? extends V> path ) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <T> void render( IData<T> data, IMarkup<? super T> content ) {
+	public <T> void render( Data<T> data, Markup<? super T> content ) {
 		cycle.render( data, content );
 	}
 
 	@Override
-	public <T> void repeat( Iterable<IData<T>> data, IRenderInstructor<? super T> content ) {
+	public <T> void repeat( Iterable<Data<T>> data, RenderInstructor<? super T> content ) {
 		cycle.repeat( data, content );
 	}
 
 	@Override
-	public IRenderStream stream() {
+	public RenderStream stream() {
 		return cycle.stream();
 	}
 
 	@Override
-	public <T> void upon( IData<T> data, IConditional<? super T> condition,
-			IRenderInstructor<? super T> then, IRenderInstructor<? super T> elSe ) {
+	public <T> void upon( Data<T> data, Conditional<? super T> condition,
+			RenderInstructor<? super T> then, RenderInstructor<? super T> elSe ) {
 		try {
 			cycle.upon( data, condition, then, elSe );
 		} catch ( Exception e ) {
@@ -84,14 +84,14 @@ public class RecoverRenderCycle
 	}
 
 	@Override
-	public <T> T util( IUtilFactory<T> factory ) {
+	public <T> T util( UtilFactory<T> factory ) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	private void recoverFrom( Exception e ) {
 		RenderException exception = new RenderException( e, hierarchy.toArray() );
-		Iterator<IRecoveryStrategy> i = strategies.iterator();
+		Iterator<RecoveryStrategy> i = strategies.iterator();
 		while ( !exception.isResolved() && i.hasNext() ) {
 			i.next().recoverFrom( exception, this );
 		}

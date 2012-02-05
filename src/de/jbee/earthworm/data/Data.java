@@ -1,142 +1,118 @@
 package de.jbee.earthworm.data;
 
-import java.util.Collections;
+public interface Data<T>
+		extends TypeDescriptor<T> {
 
-import de.jbee.lang.Set;
+	<S> Data<S> sub( DataPath<? super T, S> path );
 
-public class Data {
+	<V> V value( ValuePath<? super T, V> path );
 
-	private static final IData<Object> EMPTY = new EmptyData<Object>();
+	<V> V value( NotionalPath<? super T, V> path );
 
-	@SuppressWarnings ( "unchecked" )
-	static <T> IData<T> empty() {
-		return (IData<T>) EMPTY;
+	<S> Iterable<Data<S>> subs( ListPath<? super T, S> path );
+
+	boolean isEmpty();
+
+	public static interface Path<R, T> {
+
+		String name(); //OPEN vielleicht so bauen, dass der ListPath hier überschreiben kann um irgendwie eine Sequenz der einzelnen Namen zu liefern
 	}
 
-	static final class Property {
+	public static interface PseudoPath<R, T> {
+		// etwa 1. element eines ListPath
 
-		final String name;
-		final Object value;
-
-		Property( String name, Object value ) {
-			super();
-			this.name = name;
-			this.value = value;
-		}
-
+		// für counter: addition oder subtraktion eines fixen betrags auf ein counter 
 	}
 
-	/**
-	 * <pre>
-	 * .class CDBox
-	 * disc1..class CD
-	 * disc1.title 'Worst of ... CD1'
-	 * </pre>
-	 * 
-	 * @author Jan Bernitt (jan.bernitt@gmx.de)
-	 * 
-	 */
-	static final class ObjectData<T>
-			implements IData<T> {
+	public static interface ListPath<R, T>
+			extends DataPath<R, T> {
 
-		private final String prefix;
-		private final int start;
-		private final int end;
-		private final Set<Property> properties;
+		DataPath<R, T> head();
 
-		ObjectData( String prefix, int start, int end, Set<Property> properties ) {
-			super();
-			this.prefix = prefix;
-			this.start = start;
-			this.end = end;
-			this.properties = properties;
+		DataPath<R, T> at( int index );
+
+		ListPath<R, T> range( int start, int end );
+
+		ListPath<R, T> limit( int maxlength );
+	}
+
+	public static interface DataPath<R, T>
+			extends Path<R, T> {
+
+		//IData<T> dig( IData<? extends R> data );
+
+		ListPath<R, T> repeat( int times );
+
+		<S> DataPath<R, S> dot( DataPath<T, S> subpath );
+
+		<V> ValuePath<R, V> dot( ValuePath<T, V> subpath );
+
+		<E> ListPath<R, E> dot( ListPath<T, E> subpath );
+	}
+
+	public static interface ValuePath<R, T>
+			extends Path<R, T> {
+
+		//TODO sowas wie: <T> defaultValue();
+
+		// TODO und sowas wie: T value(IData<? extends R> data);
+
+		<V> NotionalPath<R, V> dot( NotionalPath<T, V> subpath );
+	}
+
+	public static interface NotionalPath<R, T>
+			extends ValuePath<R, T> {
+
+		T compute( R value );
+	}
+
+	static class StringLength
+			implements NotionalPath<String, Integer> {
+
+		@Override
+		public Integer compute( String value ) {
+			return value.length();
 		}
 
 		@Override
-		public <S> IData<S> sub( IDataPath<? super T, S> path ) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public <S> Iterable<IData<S>> subs( IListPath<? super T, S> path ) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public <V> V value( IValuePath<? super T, V> path ) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public <V> V value( INotionalPath<? super T, V> path ) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public boolean isEmpty() {
-			// TODO Auto-generated method stub
-			return false;
+		public <V> NotionalPath<String, V> dot( NotionalPath<Integer, V> subpath ) {
+			return new NotionalPathChain<String, Integer, V>( this, subpath );
 		}
 
 		@Override
 		public String name() {
-			// TODO Auto-generated method stub
-			return null;
+			return ":length";
 		}
 
-		@Override
-		public Class<T> type() {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
-	static final class EmptyData<T>
-			implements IData<T> {
+	static class NotionalPathChain<R, I, T>
+			implements NotionalPath<R, T> {
 
-		@Override
-		public <S> IData<S> sub( IDataPath<? super T, S> path ) {
-			return empty();
+		private final NotionalPath<R, I> parent;
+		private final NotionalPath<I, T> sub;
+
+		NotionalPathChain( NotionalPath<R, I> parent, NotionalPath<I, T> sub ) {
+			super();
+			this.parent = parent;
+			this.sub = sub;
 		}
 
 		@Override
-		public <S> Iterable<IData<S>> subs( IListPath<? super T, S> path ) {
-			return Collections.emptyList();
+		public T compute( R value ) {
+			return sub.compute( parent.compute( value ) );
 		}
 
 		@Override
-		public <V> V value( IValuePath<? super T, V> path ) {
-			return null;
-		}
-
-		@Override
-		public <V> V value( INotionalPath<? super T, V> path ) {
-			return null;
+		public <V> NotionalPath<R, V> dot( NotionalPath<T, V> subpath ) {
+			return new NotionalPathChain<R, T, V>( this, subpath );
 		}
 
 		@Override
 		public String name() {
-			return "";
-		}
-
-		@Override
-		public Class<T> type() {
-			return null;
-		}
-
-		@Override
-		public String toString() {
-			return "[nothing]";
-		}
-
-		@Override
-		public boolean isEmpty() {
-			return true;
+			return parent.name() + sub.name();
 		}
 
 	}
+
 }

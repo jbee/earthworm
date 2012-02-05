@@ -1,19 +1,19 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.earthworm.data.IData.IValuePath;
+import de.jbee.earthworm.data.Data.ValuePath;
 
 public class Label<T>
-		implements IComponent<T> {
+		implements Component<T> {
 
-	private final IValuePath<T, ? extends CharSequence> valuePath;
+	private final ValuePath<T, ? extends CharSequence> valuePath;
 
-	public Label( IValuePath<T, ? extends CharSequence> valuePath ) {
+	public Label( ValuePath<T, ? extends CharSequence> valuePath ) {
 		super();
 		this.valuePath = valuePath;
 	}
 
 	@Override
-	public void prepare( IPreparationCycle<? extends T> cycle ) {
+	public void prepare( PreparationCycle<? extends T> cycle ) {
 		cycle.variable( valuePath );
 	}
 

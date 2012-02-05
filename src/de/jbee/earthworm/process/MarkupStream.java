@@ -1,7 +1,7 @@
 package de.jbee.earthworm.process;
 
-public interface IMarkupStream
-		extends IRenderStream {
+public interface MarkupStream
+		extends RenderStream {
 
 	void append( CharSequence markup );
 }

@@ -1,19 +1,19 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.earthworm.data.IData;
-import de.jbee.earthworm.data.IData.IValuePath;
+import de.jbee.earthworm.data.Data;
+import de.jbee.earthworm.data.Data.ValuePath;
 
 public class Fulfills {
 
-	public static <T> IConditional<T> trueValue( IValuePath<T, Boolean> path ) {
+	public static <T> Conditional<T> trueValue( ValuePath<T, Boolean> path ) {
 		return booleanValue( path, true );
 	}
 
-	public static <T> IConditional<T> falseValue( IValuePath<T, Boolean> path ) {
+	public static <T> Conditional<T> falseValue( ValuePath<T, Boolean> path ) {
 		return booleanValue( path, false );
 	}
 
-	public static <T> IConditional<T> booleanValue( IValuePath<T, Boolean> path, boolean expected ) {
+	public static <T> Conditional<T> booleanValue( ValuePath<T, Boolean> path, boolean expected ) {
 		return new BooleanValueCondition<T>( path, false );
 	}
 
@@ -23,19 +23,19 @@ public class Fulfills {
 	 * @author Jan Bernitt (jan.bernitt@gmx.de)
 	 */
 	static final class BooleanValueCondition<T>
-			implements IConditional<T> {
+			implements Conditional<T> {
 
-		private final IValuePath<T, Boolean> path;
+		private final ValuePath<T, Boolean> path;
 		private final boolean expected;
 
-		BooleanValueCondition( IValuePath<T, Boolean> path, boolean expected ) {
+		BooleanValueCondition( ValuePath<T, Boolean> path, boolean expected ) {
 			super();
 			this.path = path;
 			this.expected = expected;
 		}
 
 		@Override
-		public boolean fulfilledBy( IData<? extends T> data ) {
+		public boolean fulfilledBy( Data<? extends T> data ) {
 			return data.value( path ) == expected;
 		}
 	}

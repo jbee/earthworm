@@ -1,102 +1,24 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.earthworm.data.IData.IDataPath;
-import de.jbee.earthworm.data.IData.IListPath;
+/**
+ * A {@link Component} is the basic element of a page, before it has been prepared.
+ * 
+ * During preparation the {@linkplain Component}s transform its content to equivalent
+ * {@link RenderInstructor}s.
+ * 
+ * The bigger brother of a {@linkplain Component} is a {@link Container}. They introduce levels of
+ * nesting to the preparation cycle whereby they are the block elements of the preparation phase.
+ * 
+ * @author Jan Bernitt (jan.bernitt@gmx.de)
+ * 
+ * @see Container
+ * 
+ * @param <T>
+ *            Type of value that can be prepared - A instance of that type is not accessible here
+ *            since the preparation phase is realized once in a static context.
+ */
+public interface Component<T> {
 
-public final class Component {
+	void prepare( PreparationCycle<? extends T> cycle );
 
-	private Component() {
-		// util
-	}
-
-	public static IComponent<Object> markup( CharSequence markup ) {
-		return new MarkupComponent( markup );
-	}
-
-	public static <T, E> IComponent<T> partial( IDataPath<? super T, E> path, IComponent<E> part ) {
-		return new PartialComponent<T, E>( path, part );
-	}
-
-	public static <T, E> IComponent<T> repeats( IListPath<? super T, E> path, IComponent<E> item ) {
-		return new RepeatingComponent<T, E>( path, item );
-	}
-
-	public static <T> IComponent<T> when( IConditional<? super T> condition,
-			IComponent<? super T> element ) {
-		return new ConditionalComponent<T>( condition, element );
-	}
-
-	static final class MarkupComponent
-			implements IComponent<Object> {
-
-		final CharSequence markup;
-
-		MarkupComponent( CharSequence markup ) {
-			super();
-			this.markup = markup;
-		}
-
-		@Override
-		public void prepare( IPreparationCycle<? extends Object> cycle ) {
-			cycle.constant( markup );
-		}
-
-	}
-
-	static final class PartialComponent<T, E>
-			implements IComponent<T> {
-
-		final IDataPath<? super T, E> path;
-		final IComponent<E> part;
-
-		PartialComponent( IDataPath<? super T, E> path, IComponent<E> part ) {
-			super();
-			this.path = path;
-			this.part = part;
-		}
-
-		@Override
-		public void prepare( IPreparationCycle<? extends T> cycle ) {
-			cycle.prepare( path, part );
-		}
-
-	}
-
-	static final class RepeatingComponent<T, E>
-			implements IComponent<T> {
-
-		final IListPath<? super T, E> path;
-		final IComponent<E> item;
-
-		RepeatingComponent( IListPath<? super T, E> path, IComponent<E> element ) {
-			super();
-			this.path = path;
-			this.item = element;
-		}
-
-		@Override
-		public void prepare( IPreparationCycle<? extends T> cycle ) {
-			item.prepare( cycle.in( Container.repeats( path ) ) );
-		}
-
-	}
-
-	static final class ConditionalComponent<T>
-			implements IComponent<T> {
-
-		final IConditional<? super T> condition;
-		final IComponent<? super T> item;
-
-		ConditionalComponent( IConditional<? super T> condition, IComponent<? super T> item ) {
-			super();
-			this.condition = condition;
-			this.item = item;
-		}
-
-		@Override
-		public void prepare( IPreparationCycle<? extends T> cycle ) {
-			item.prepare( cycle.in( Container.dependsOn( condition ) ) );
-		}
-
-	}
 }

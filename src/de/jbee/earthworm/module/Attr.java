@@ -1,6 +1,6 @@
 package de.jbee.earthworm.module;
 
-public class Attr {
+public interface Attr<T> {
 
-	public static final IAttr<String> name = null;
+	String name();
 }
