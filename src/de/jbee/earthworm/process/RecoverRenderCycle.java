@@ -1,14 +1,11 @@
 package de.jbee.earthworm.process;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-import de.jbee.earthworm.data.Data;
-import de.jbee.earthworm.data.Path.ValuePath;
+import de.jbee.data.Data;
+import de.jbee.data.DataProperty.ValueProperty;
 import de.jbee.earthworm.module.Conditional;
 import de.jbee.earthworm.module.Markup;
 import de.jbee.earthworm.module.RenderInstructor;
+import de.jbee.lang.List;
 
 public class RecoverRenderCycle
 		implements ControlCycle {
@@ -16,8 +13,8 @@ public class RecoverRenderCycle
 	//TODO der cycle könnte evtl. auswerten ob neue recover startegien gesetzt wurden, seit dem letzten aktivieren try-catch
 	// dann ist es glaube ich nutzlos ein weiteres darum zu wickeln bzw. kommt drauf an, ob man immer möglicht bald recovern will
 
-	private final List<RecoveryStrategy> strategies = new LinkedList<RecoveryStrategy>();
-	private final LinkedList<Object> hierarchy = new LinkedList<Object>();
+	private List<RecoveryStrategy> strategies = List.with.noElements();
+	private List<Object> hierarchy = List.with.noElements();
 
 	private final ControlCycle cycle;
 
@@ -29,9 +26,9 @@ public class RecoverRenderCycle
 	@Override
 	public <T> void instruct( Data<T> data, RenderInstructor<? super T> content,
 			RecoveryStrategy strategy ) {
-		strategies.add( 0, strategy );
+		strategies = strategies.prepand( strategy );
 		instruct( data, content );
-		strategies.remove( strategy );
+		strategies = strategies.drop( 1 );
 	}
 
 	@Override
@@ -43,19 +40,18 @@ public class RecoverRenderCycle
 
 	@Override
 	public <T> void instruct( Data<T> data, RenderInstructor<? super T> content ) {
-		hierarchy.addLast( content );
+		hierarchy = hierarchy.append( content );
 		try {
 			cycle.instruct( data, content );
 		} catch ( Exception e ) {
 			recoverFrom( e );
 		}
-		hierarchy.removeLast();
+		hierarchy = List.alterBy.dropRight( 1 ).in( hierarchy );
 	}
 
 	@Override
-	public <T, V> V read( Data<? extends T> data, ValuePath<? super T, ? extends V> path ) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T, V> V read( Data<? extends T> data, ValueProperty<? super T, ? extends V> path ) {
+		return cycle.read( data, path );
 	}
 
 	@Override
@@ -64,7 +60,7 @@ public class RecoverRenderCycle
 	}
 
 	@Override
-	public <T> void repeat( Iterable<Data<T>> data, RenderInstructor<? super T> content ) {
+	public <T> void repeat( List<Data<T>> data, RenderInstructor<? super T> content ) {
 		cycle.repeat( data, content );
 	}
 
@@ -90,10 +86,11 @@ public class RecoverRenderCycle
 	}
 
 	private void recoverFrom( Exception e ) {
-		RenderException exception = new RenderException( e, hierarchy.toArray() );
-		Iterator<RecoveryStrategy> i = strategies.iterator();
-		while ( !exception.isResolved() && i.hasNext() ) {
-			i.next().recoverFrom( exception, this );
+		RenderException exception = new RenderException( e, hierarchy );
+		int i = 0;
+		final int end = strategies.length();
+		while ( !exception.isResolved() && i < end ) {
+			strategies.at( i ).recoverFrom( exception, this );
 		}
 		if ( !exception.isResolved() ) {
 			throw exception;

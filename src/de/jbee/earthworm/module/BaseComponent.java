@@ -1,7 +1,7 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.earthworm.data.Path.DataPath;
-import de.jbee.earthworm.data.Path.ListPath;
+import de.jbee.data.DataProperty.ObjectProperty;
+import de.jbee.data.DataProperty.RangeProperty;
 
 public final class BaseComponent {
 
@@ -13,11 +13,11 @@ public final class BaseComponent {
 		return new MarkupComponent( markup );
 	}
 
-	public static <T, E> Component<T> partial( DataPath<? super T, E> path, Component<E> part ) {
+	public static <T, E> Component<T> partial( ObjectProperty<? super T, E> path, Component<E> part ) {
 		return new PartialComponent<T, E>( path, part );
 	}
 
-	public static <T, E> Component<T> repeats( ListPath<? super T, E> path, Component<E> item ) {
+	public static <T, E> Component<T> repeats( RangeProperty<? super T, E> path, Component<E> item ) {
 		return new RepeatingComponent<T, E>( path, item );
 	}
 
@@ -46,10 +46,10 @@ public final class BaseComponent {
 	static final class PartialComponent<T, E>
 			implements Component<T> {
 
-		final DataPath<? super T, E> path;
+		final ObjectProperty<? super T, E> path;
 		final Component<E> part;
 
-		PartialComponent( DataPath<? super T, E> path, Component<E> part ) {
+		PartialComponent( ObjectProperty<? super T, E> path, Component<E> part ) {
 			super();
 			this.path = path;
 			this.part = part;
@@ -65,10 +65,10 @@ public final class BaseComponent {
 	static final class RepeatingComponent<T, E>
 			implements Component<T> {
 
-		final ListPath<? super T, E> path;
+		final RangeProperty<? super T, E> path;
 		final Component<E> item;
 
-		RepeatingComponent( ListPath<? super T, E> path, Component<E> element ) {
+		RepeatingComponent( RangeProperty<? super T, E> path, Component<E> element ) {
 			super();
 			this.path = path;
 			this.item = element;

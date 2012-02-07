@@ -3,9 +3,9 @@ package de.jbee.earthworm.module;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.jbee.earthworm.data.Data;
-import de.jbee.earthworm.data.Path.DataPath;
-import de.jbee.earthworm.data.Path.ValuePath;
+import de.jbee.data.Data;
+import de.jbee.data.DataProperty.ObjectProperty;
+import de.jbee.data.DataProperty.ValueProperty;
 import de.jbee.earthworm.process.ControlCycle;
 
 public final class BasePreparationCycle<T>
@@ -22,7 +22,7 @@ public final class BasePreparationCycle<T>
 	}
 
 	@Override
-	public void variable( ValuePath<? super T, ? extends CharSequence> path ) {
+	public void variable( ValueProperty<? super T, ? extends CharSequence> path ) {
 		append( BaseMarkup.dynamic( path ) );
 	}
 
@@ -34,7 +34,7 @@ public final class BasePreparationCycle<T>
 	}
 
 	@Override
-	public <V> void prepare( DataPath<? super T, V> path, Component<V> component ) {
+	public <V> void prepare( ObjectProperty<? super T, V> path, Component<V> component ) {
 		BasePreparationCycle<V> componentCycle = new BasePreparationCycle<V>();
 		append( BaseMarkup.partial( path, componentCycle.container ) );
 		component.prepare( componentCycle );

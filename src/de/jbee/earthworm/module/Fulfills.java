@@ -1,19 +1,19 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.earthworm.data.Data;
-import de.jbee.earthworm.data.Path.ValuePath;
+import de.jbee.data.Data;
+import de.jbee.data.DataProperty.ValueProperty;
 
 public class Fulfills {
 
-	public static <T> Conditional<T> trueValue( ValuePath<T, Boolean> path ) {
+	public static <T> Conditional<T> trueValue( ValueProperty<T, Boolean> path ) {
 		return booleanValue( path, true );
 	}
 
-	public static <T> Conditional<T> falseValue( ValuePath<T, Boolean> path ) {
+	public static <T> Conditional<T> falseValue( ValueProperty<T, Boolean> path ) {
 		return booleanValue( path, false );
 	}
 
-	public static <T> Conditional<T> booleanValue( ValuePath<T, Boolean> path, boolean expected ) {
+	public static <T> Conditional<T> booleanValue( ValueProperty<T, Boolean> path, boolean expected ) {
 		return new BooleanValueCondition<T>( path, false );
 	}
 
@@ -25,10 +25,10 @@ public class Fulfills {
 	static final class BooleanValueCondition<T>
 			implements Conditional<T> {
 
-		private final ValuePath<T, Boolean> path;
+		private final ValueProperty<T, Boolean> path;
 		private final boolean expected;
 
-		BooleanValueCondition( ValuePath<T, Boolean> path, boolean expected ) {
+		BooleanValueCondition( ValueProperty<T, Boolean> path, boolean expected ) {
 			super();
 			this.path = path;
 			this.expected = expected;

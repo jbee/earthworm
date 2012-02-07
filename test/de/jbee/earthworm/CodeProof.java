@@ -1,8 +1,8 @@
 package de.jbee.earthworm;
 
-import de.jbee.earthworm.data.Path.DataPath;
-import de.jbee.earthworm.data.Path.ListPath;
-import de.jbee.earthworm.data.Path.ValuePath;
+import de.jbee.data.DataProperty.ObjectProperty;
+import de.jbee.data.DataProperty.RangeProperty;
+import de.jbee.data.DataProperty.ValueProperty;
 import de.jbee.earthworm.module.Attribute;
 import de.jbee.earthworm.module.BaseComponent;
 import de.jbee.earthworm.module.BaseContainer;
@@ -16,29 +16,29 @@ public class CodeProof {
 
 	static interface Album {
 
-		ValuePath<Album, String> title = null;
-		ValuePath<Album, Boolean> ep = null;
-		ListPath<Album, Track> tracks = null;
-		DataPath<Album, Track> hiddenTrack = null;
+		ValueProperty<Album, String> title = null;
+		ValueProperty<Album, Boolean> ep = null;
+		RangeProperty<Album, Track> tracks = null;
+		ObjectProperty<Album, Track> hiddenTrack = null;
 	}
 
 	static interface CdBox
 			extends Album {
 
-		ValuePath<CdBox, String> subtitle = null;
+		ValueProperty<CdBox, String> subtitle = null;
 	}
 
 	static interface Track {
 
-		ValuePath<Track, Integer> number = null;
-		ValuePath<Track, String> title = null;
-		ValuePath<Track, Long> length = null;
-		ListPath<Track, Artist> artists = null;
+		ValueProperty<Track, Integer> number = null;
+		ValueProperty<Track, String> title = null;
+		ValueProperty<Track, Long> length = null;
+		RangeProperty<Track, Artist> artists = null;
 	}
 
 	static interface Artist {
 
-		ValuePath<Artist, String> name = null;
+		ValueProperty<Artist, String> name = null;
 	}
 
 	static enum MyTemplateTags

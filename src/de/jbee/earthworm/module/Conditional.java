@@ -1,6 +1,6 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.earthworm.data.Data;
+import de.jbee.data.Data;
 
 public interface Conditional<T> {
 

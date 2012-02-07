@@ -1,9 +1,9 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.earthworm.data.Data;
-import de.jbee.earthworm.data.Path.DataPath;
-import de.jbee.earthworm.data.Path.ListPath;
-import de.jbee.earthworm.data.Path.ValuePath;
+import de.jbee.data.Data;
+import de.jbee.data.DataProperty.ObjectProperty;
+import de.jbee.data.DataProperty.RangeProperty;
+import de.jbee.data.DataProperty.ValueProperty;
 import de.jbee.earthworm.process.ControlCycle;
 import de.jbee.earthworm.process.MarkupCycle;
 
@@ -15,7 +15,7 @@ public final class BaseMarkup {
 
 	public static final RenderInstructor<Object> EMPTY = new EmptyMarkup();
 
-	public static <T> RenderInstructor<T> dynamic( ValuePath<? super T, ? extends CharSequence> path ) {
+	public static <T> RenderInstructor<T> dynamic( ValueProperty<? super T, ? extends CharSequence> path ) {
 		return new DynamicMarkup<T>( path );
 	}
 
@@ -23,7 +23,7 @@ public final class BaseMarkup {
 		return new StaticMarkup( markup );
 	}
 
-	public static <T, V> RenderInstructor<T> partial( DataPath<? super T, V> path,
+	public static <T, V> RenderInstructor<T> partial( ObjectProperty<? super T, V> path,
 			RenderInstructor<V> part ) {
 		return new PartialMarkup<T, V>( path, part );
 	}
@@ -33,7 +33,7 @@ public final class BaseMarkup {
 		return new ConditionalMarkup<T>( condition, markup );
 	}
 
-	public static <T, E> RenderInstructor<T> repeat( ListPath<T, E> path,
+	public static <T, E> RenderInstructor<T> repeat( RangeProperty<T, E> path,
 			RenderInstructor<E> element ) {
 		return new RepeatingMarkup<T, E>( path, element );
 	}
@@ -92,9 +92,9 @@ public final class BaseMarkup {
 	static final class DynamicMarkup<T>
 			extends DirectRenderingMarkup<T> {
 
-		private final ValuePath<? super T, ? extends CharSequence> path;
+		private final ValueProperty<? super T, ? extends CharSequence> path;
 
-		DynamicMarkup( ValuePath<? super T, ? extends CharSequence> path ) {
+		DynamicMarkup( ValueProperty<? super T, ? extends CharSequence> path ) {
 			super();
 			this.path = path;
 		}
@@ -157,10 +157,10 @@ public final class BaseMarkup {
 	static final class RepeatingMarkup<T, E>
 			implements RenderInstructor<T> {
 
-		private final ListPath<T, E> path;
+		private final RangeProperty<T, E> path;
 		private final RenderInstructor<E> item;
 
-		RepeatingMarkup( ListPath<T, E> path, RenderInstructor<E> item ) {
+		RepeatingMarkup( RangeProperty<T, E> path, RenderInstructor<E> item ) {
 			super();
 			this.path = path;
 			this.item = item;
@@ -180,10 +180,10 @@ public final class BaseMarkup {
 	static class PartialMarkup<T, V>
 			implements RenderInstructor<T> {
 
-		private final DataPath<? super T, V> path;
+		private final ObjectProperty<? super T, V> path;
 		private final RenderInstructor<V> part;
 
-		PartialMarkup( DataPath<? super T, V> path, RenderInstructor<V> part ) {
+		PartialMarkup( ObjectProperty<? super T, V> path, RenderInstructor<V> part ) {
 			super();
 			this.path = path;
 			this.part = part;

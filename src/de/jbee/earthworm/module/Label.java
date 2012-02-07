@@ -1,13 +1,13 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.earthworm.data.Path.ValuePath;
+import de.jbee.data.DataProperty.ValueProperty;
 
 public class Label<T>
 		implements Component<T> {
 
-	private final ValuePath<T, ? extends CharSequence> valuePath;
+	private final ValueProperty<T, ? extends CharSequence> valuePath;
 
-	public Label( ValuePath<T, ? extends CharSequence> valuePath ) {
+	public Label( ValueProperty<T, ? extends CharSequence> valuePath ) {
 		super();
 		this.valuePath = valuePath;
 	}

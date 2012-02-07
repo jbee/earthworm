@@ -1,17 +1,19 @@
 package de.jbee.earthworm.process;
 
+import de.jbee.lang.List;
+
 public class RenderException
 		extends RuntimeException {
 
 	private boolean resolved = false;
-	private final Object[] hierarchy;
+	private final List<?> hierarchy;
 
-	public RenderException( Throwable cause, Object[] hierarchy ) {
+	public RenderException( Throwable cause, List<?> hierarchy ) {
 		super( cause );
 		this.hierarchy = hierarchy;
 	}
 
-	public Object[] getHierarchy() {
+	public List<?> getHierarchy() {
 		return hierarchy;
 	}
 

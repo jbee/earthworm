@@ -6,9 +6,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import de.jbee.earthworm.data.Path.DataPath;
-import de.jbee.earthworm.data.Path.ListPath;
-import de.jbee.earthworm.data.Path.ValuePath;
+import de.jbee.data.DataProperty.ObjectProperty;
+import de.jbee.data.DataProperty.RangeProperty;
+import de.jbee.data.DataProperty.ValueProperty;
 
 public class Template<T>
 		implements Component<T> {
@@ -34,17 +34,17 @@ public class Template<T>
 		}
 
 		// man erkennt ja am markup, ob es nur ein leers platzhalter-tag ist (ersetzen) oder es inhalt gibt (davon ausgehen, dass die component das berücksichtigt
-		public <V> ComponentBinder<V> using( DataPath<? super T, V> path ) {
+		public <V> ComponentBinder<V> using( ObjectProperty<? super T, V> path ) {
 
 			return null;
 		}
 
-		public <V> ListComponentBinder<V> listing( ListPath<? super T, V> path ) {
+		public <V> ListComponentBinder<V> listing( RangeProperty<? super T, V> path ) {
 			return null;
 		}
 
 		// TODO das kann man sogar noch als builder weiterführen - sodass man beliebige folge "uses" bedingt zeigen kann 
-		public ComponentBinder<T> dependsOn( ValuePath<? super T, Boolean> path ) {
+		public ComponentBinder<T> dependsOn( ValueProperty<? super T, Boolean> path ) {
 			return dependsOn( Fulfills.trueValue( path ) );
 		}
 
@@ -85,7 +85,7 @@ public class Template<T>
 		return null;
 	}
 
-	public <V extends CharSequence> void bind( Attr<V> attr, ValuePath<? super T, V> path ) {
+	public <V extends CharSequence> void bind( Attr<V> attr, ValueProperty<? super T, V> path ) {
 
 	}
 
@@ -123,9 +123,9 @@ public class Template<T>
 			implements Component<T> {
 
 		final Attr<V> attr;
-		final ValuePath<T, V> path;
+		final ValueProperty<T, V> path;
 
-		TemplateAttr( Attr<V> tag, ValuePath<T, V> path ) {
+		TemplateAttr( Attr<V> tag, ValueProperty<T, V> path ) {
 			super();
 			this.attr = tag;
 			this.path = path;
