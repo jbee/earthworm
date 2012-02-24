@@ -1,7 +1,7 @@
 package de.jbee.earthworm.process;
 
-import de.jbee.data.Data;
-import de.jbee.data.DataProperty.ValueProperty;
+import de.jbee.data.Dataset;
+import de.jbee.data.Dataset.ValueProperty;
 import de.jbee.earthworm.module.Conditional;
 import de.jbee.earthworm.module.Markup;
 import de.jbee.earthworm.module.RenderInstructor;
@@ -24,7 +24,7 @@ public class RecoverRenderCycle
 	}
 
 	@Override
-	public <T> void instruct( Data<T> data, RenderInstructor<? super T> content,
+	public <T> void instruct( Dataset<T> data, RenderInstructor<? super T> content,
 			RecoveryStrategy strategy ) {
 		strategies = strategies.prepand( strategy );
 		instruct( data, content );
@@ -32,35 +32,35 @@ public class RecoverRenderCycle
 	}
 
 	@Override
-	public <T> void guard( Data<T> data, Conditional<? super T> condition,
+	public <T> void guard( Dataset<T> data, Conditional<? super T> condition,
 			RenderInstructor<? super T> then ) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public <T> void instruct( Data<T> data, RenderInstructor<? super T> content ) {
+	public <T> void instruct( Dataset<T> data, RenderInstructor<? super T> content ) {
 		hierarchy = hierarchy.append( content );
 		try {
 			cycle.instruct( data, content );
 		} catch ( Exception e ) {
 			recoverFrom( e );
 		}
-		hierarchy = List.alterBy.dropRight( 1 ).in( hierarchy );
+		hierarchy = List.alterBy.dropRight( 1 ).from( hierarchy );
 	}
 
 	@Override
-	public <T, V> V read( Data<? extends T> data, ValueProperty<? super T, ? extends V> path ) {
+	public <T, V> V read( Dataset<? extends T> data, ValueProperty<? super T, ? extends V> path ) {
 		return cycle.read( data, path );
 	}
 
 	@Override
-	public <T> void render( Data<T> data, Markup<? super T> content ) {
+	public <T> void render( Dataset<T> data, Markup<? super T> content ) {
 		cycle.render( data, content );
 	}
 
 	@Override
-	public <T> void repeat( List<Data<T>> data, RenderInstructor<? super T> content ) {
+	public <T> void repeat( Dataset<T> data, RenderInstructor<? super T> content ) {
 		cycle.repeat( data, content );
 	}
 
@@ -70,7 +70,7 @@ public class RecoverRenderCycle
 	}
 
 	@Override
-	public <T> void upon( Data<T> data, Conditional<? super T> condition,
+	public <T> void upon( Dataset<T> data, Conditional<? super T> condition,
 			RenderInstructor<? super T> then, RenderInstructor<? super T> elSe ) {
 		try {
 			cycle.upon( data, condition, then, elSe );

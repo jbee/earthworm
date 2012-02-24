@@ -1,8 +1,7 @@
 package de.jbee.earthworm;
 
-import de.jbee.data.DataProperty.ObjectProperty;
-import de.jbee.data.DataProperty.RangeProperty;
-import de.jbee.data.DataProperty.ValueProperty;
+import de.jbee.data.Dataset.MemberProperty;
+import de.jbee.data.Dataset.ValueProperty;
 import de.jbee.earthworm.module.Attribute;
 import de.jbee.earthworm.module.BaseComponent;
 import de.jbee.earthworm.module.BaseContainer;
@@ -18,8 +17,8 @@ public class CodeProof {
 
 		ValueProperty<Album, String> title = null;
 		ValueProperty<Album, Boolean> ep = null;
-		RangeProperty<Album, Track> tracks = null;
-		ObjectProperty<Album, Track> hiddenTrack = null;
+		MemberProperty<Album, Track> tracks = null;
+		MemberProperty<Album, Track> hiddenTrack = null;
 	}
 
 	static interface CdBox
@@ -33,7 +32,7 @@ public class CodeProof {
 		ValueProperty<Track, Integer> number = null;
 		ValueProperty<Track, String> title = null;
 		ValueProperty<Track, Long> length = null;
-		RangeProperty<Track, Artist> artists = null;
+		MemberProperty<Track, Artist> artists = null;
 	}
 
 	static interface Artist {

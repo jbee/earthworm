@@ -2,8 +2,9 @@ package de.jbee.earthworm.process;
 
 import java.util.LinkedList;
 
-import de.jbee.data.Data;
-import de.jbee.data.DataProperty.ValueProperty;
+import de.jbee.data.Dataset;
+import de.jbee.data.Property;
+import de.jbee.data.Dataset.ValueProperty;
 import de.jbee.earthworm.module.BaseMarkup;
 import de.jbee.earthworm.module.Conditional;
 import de.jbee.earthworm.module.Markup;
@@ -29,19 +30,19 @@ public class BaseRenderCycle
 	}
 
 	@Override
-	public <T> void instruct( Data<T> data, RenderInstructor<? super T> content,
+	public <T> void instruct( Dataset<T> data, RenderInstructor<? super T> content,
 			RecoveryStrategy strategy ) {
 		unsupported( "Wrap with " + RecoverRenderCycle.class.getSimpleName() );
 	}
 
 	@Override
-	public <T> void guard( Data<T> data, Conditional<? super T> condition,
+	public <T> void guard( Dataset<T> data, Conditional<? super T> condition,
 			RenderInstructor<? super T> then ) {
 		upon( data, condition, then, BaseMarkup.EMPTY );
 	}
 
 	@Override
-	public <T> void upon( Data<T> data, Conditional<? super T> condition,
+	public <T> void upon( Dataset<T> data, Conditional<? super T> condition,
 			RenderInstructor<? super T> then, RenderInstructor<? super T> elSe ) {
 		if ( condition.fulfilledBy( data ) ) {
 			cycle.instruct( data, then );
@@ -51,26 +52,26 @@ public class BaseRenderCycle
 	}
 
 	@Override
-	public <T> void instruct( Data<T> data, RenderInstructor<? super T> content ) {
+	public <T> void instruct( Dataset<T> data, RenderInstructor<? super T> content ) {
 		content.instructRendering( data, cycle );
 	}
 
 	@Override
-	public <T, V> V read( Data<? extends T> data, ValueProperty<? super T, ? extends V> path ) {
+	public <T, V> V read( Dataset<? extends T> data, ValueProperty<? super T, ? extends V> path ) {
 		return data.value( path );
 	}
 
 	@Override
-	public <T> void render( Data<T> data, Markup<? super T> content ) {
+	public <T> void render( Dataset<T> data, Markup<? super T> content ) {
 		content.render( data, this );
 	}
 
 	@Override
-	public <T> void repeat( List<Data<T>> data, RenderInstructor<? super T> content ) {
+	public <T> void repeat( Dataset<T> data, RenderInstructor<? super T> content ) {
 		counters.addFirst( 1 );
-		for ( Data<T> elemData : List.iterate.forwards( data ) ) {
+		for ( Dataset<T> e : List.iterate.forwards( data.items( Property.<T> each() ) ) ) {
 			//FIXME provide counter also in data
-			cycle.instruct( elemData, content );
+			cycle.instruct( e, content );
 			counters.set( 0, counters.get( 0 ) );
 		}
 		counters.removeFirst();

@@ -1,9 +1,8 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.data.Data;
-import de.jbee.data.DataProperty.ObjectProperty;
-import de.jbee.data.DataProperty.RangeProperty;
-import de.jbee.data.DataProperty.ValueProperty;
+import de.jbee.data.Dataset;
+import de.jbee.data.Dataset.MemberProperty;
+import de.jbee.data.Dataset.ValueProperty;
 import de.jbee.earthworm.process.ControlCycle;
 import de.jbee.earthworm.process.MarkupCycle;
 
@@ -15,7 +14,8 @@ public final class BaseMarkup {
 
 	public static final RenderInstructor<Object> EMPTY = new EmptyMarkup();
 
-	public static <T> RenderInstructor<T> dynamic( ValueProperty<? super T, ? extends CharSequence> path ) {
+	public static <T> RenderInstructor<T> dynamic(
+			ValueProperty<? super T, ? extends CharSequence> path ) {
 		return new DynamicMarkup<T>( path );
 	}
 
@@ -23,7 +23,7 @@ public final class BaseMarkup {
 		return new StaticMarkup( markup );
 	}
 
-	public static <T, V> RenderInstructor<T> partial( ObjectProperty<? super T, V> path,
+	public static <T, V> RenderInstructor<T> partial( MemberProperty<? super T, V> path,
 			RenderInstructor<V> part ) {
 		return new PartialMarkup<T, V>( path, part );
 	}
@@ -33,7 +33,7 @@ public final class BaseMarkup {
 		return new ConditionalMarkup<T>( condition, markup );
 	}
 
-	public static <T, E> RenderInstructor<T> repeat( RangeProperty<T, E> path,
+	public static <T, E> RenderInstructor<T> repeat( MemberProperty<T, E> path,
 			RenderInstructor<E> element ) {
 		return new RepeatingMarkup<T, E>( path, element );
 	}
@@ -42,7 +42,7 @@ public final class BaseMarkup {
 			implements RenderInstructor<Object> {
 
 		@Override
-		public void instructRendering( Data<? extends Object> data, ControlCycle cycle ) {
+		public void instructRendering( Dataset<? extends Object> data, ControlCycle cycle ) {
 			// just do nothing
 		}
 
@@ -64,7 +64,7 @@ public final class BaseMarkup {
 		}
 
 		@Override
-		public void instructRendering( Data<? extends T> data, ControlCycle cycle ) {
+		public void instructRendering( Dataset<? extends T> data, ControlCycle cycle ) {
 			cycle.render( data, markup );
 		}
 
@@ -84,7 +84,7 @@ public final class BaseMarkup {
 			implements RenderInstructor<T>, Markup<T> {
 
 		@Override
-		public final void instructRendering( Data<? extends T> data, ControlCycle cycle ) {
+		public final void instructRendering( Dataset<? extends T> data, ControlCycle cycle ) {
 			cycle.render( data, this );
 		}
 	}
@@ -100,7 +100,7 @@ public final class BaseMarkup {
 		}
 
 		@Override
-		public void render( Data<? extends T> data, MarkupCycle cycle ) {
+		public void render( Dataset<? extends T> data, MarkupCycle cycle ) {
 			cycle.stream().append( cycle.read( data, path ) );
 		}
 
@@ -121,7 +121,7 @@ public final class BaseMarkup {
 		}
 
 		@Override
-		public void render( Data<? extends Object> data, MarkupCycle cycle ) {
+		public void render( Dataset<? extends Object> data, MarkupCycle cycle ) {
 			cycle.stream().append( markup );
 		}
 
@@ -144,7 +144,7 @@ public final class BaseMarkup {
 		}
 
 		@Override
-		public void instructRendering( Data<? extends T> data, ControlCycle cycle ) {
+		public void instructRendering( Dataset<? extends T> data, ControlCycle cycle ) {
 			cycle.guard( data, condition, item );
 		}
 
@@ -157,18 +157,18 @@ public final class BaseMarkup {
 	static final class RepeatingMarkup<T, E>
 			implements RenderInstructor<T> {
 
-		private final RangeProperty<T, E> path;
+		private final MemberProperty<T, E> path;
 		private final RenderInstructor<E> item;
 
-		RepeatingMarkup( RangeProperty<T, E> path, RenderInstructor<E> item ) {
+		RepeatingMarkup( MemberProperty<T, E> path, RenderInstructor<E> item ) {
 			super();
 			this.path = path;
 			this.item = item;
 		}
 
 		@Override
-		public void instructRendering( Data<? extends T> data, ControlCycle cycle ) {
-			cycle.repeat( data.subs( path ), item );
+		public void instructRendering( Dataset<? extends T> data, ControlCycle cycle ) {
+			cycle.repeat( data.member( path ), item );
 		}
 
 		@Override
@@ -180,18 +180,18 @@ public final class BaseMarkup {
 	static class PartialMarkup<T, V>
 			implements RenderInstructor<T> {
 
-		private final ObjectProperty<? super T, V> path;
+		private final MemberProperty<? super T, V> path;
 		private final RenderInstructor<V> part;
 
-		PartialMarkup( ObjectProperty<? super T, V> path, RenderInstructor<V> part ) {
+		PartialMarkup( MemberProperty<? super T, V> path, RenderInstructor<V> part ) {
 			super();
 			this.path = path;
 			this.part = part;
 		}
 
 		@Override
-		public void instructRendering( Data<? extends T> data, ControlCycle cycle ) {
-			part.instructRendering( data.sub( path ), cycle );
+		public void instructRendering( Dataset<? extends T> data, ControlCycle cycle ) {
+			part.instructRendering( data.member( path ), cycle );
 		}
 
 		@Override

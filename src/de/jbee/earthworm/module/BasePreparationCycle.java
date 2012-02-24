@@ -3,9 +3,9 @@ package de.jbee.earthworm.module;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.jbee.data.Data;
-import de.jbee.data.DataProperty.ObjectProperty;
-import de.jbee.data.DataProperty.ValueProperty;
+import de.jbee.data.Dataset;
+import de.jbee.data.Dataset.MemberProperty;
+import de.jbee.data.Dataset.ValueProperty;
 import de.jbee.earthworm.process.ControlCycle;
 
 public final class BasePreparationCycle<T>
@@ -34,7 +34,7 @@ public final class BasePreparationCycle<T>
 	}
 
 	@Override
-	public <V> void prepare( ObjectProperty<? super T, V> path, Component<V> component ) {
+	public <V> void prepare( MemberProperty<? super T, V> path, Component<V> component ) {
 		BasePreparationCycle<V> componentCycle = new BasePreparationCycle<V>();
 		append( BaseMarkup.partial( path, componentCycle.container ) );
 		component.prepare( componentCycle );
@@ -50,7 +50,7 @@ public final class BasePreparationCycle<T>
 		final List<RenderInstructor<? super T>> elements = new ArrayList<RenderInstructor<? super T>>();
 
 		@Override
-		public void instructRendering( Data<? extends T> data, ControlCycle cycle ) {
+		public void instructRendering( Dataset<? extends T> data, ControlCycle cycle ) {
 			for ( RenderInstructor<? super T> e : elements ) {
 				cycle.instruct( data, e );
 			}

@@ -1,6 +1,6 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.data.DataProperty.ValueProperty;
+import de.jbee.data.Dataset.ValueProperty;
 
 public class Label<T>
 		implements Component<T> {

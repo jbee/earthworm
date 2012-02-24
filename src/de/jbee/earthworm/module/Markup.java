@@ -1,13 +1,13 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.data.Data;
+import de.jbee.data.Dataset;
 import de.jbee.earthworm.process.MarkupCycle;
 import de.jbee.earthworm.process.MarkupStream;
 
 /**
  * <p>
  * {@link Markup} is the low level element of which a page consists. They compute the final string
- * representation for the <code>data</code> passed to their {@link #render(Data, MarkupCycle)}
+ * representation for the <code>data</code> passed to their {@link #render(Dataset, MarkupCycle)}
  * method and append it to the {@link MarkupStream} of the {@link MarkupCycle} given.
  * </p>
  * 
@@ -30,5 +30,5 @@ import de.jbee.earthworm.process.MarkupStream;
  */
 public interface Markup<T> {
 
-	void render( Data<? extends T> data, MarkupCycle cycle );
+	void render( Dataset<? extends T> data, MarkupCycle cycle );
 }

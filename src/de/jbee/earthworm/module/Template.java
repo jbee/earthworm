@@ -6,9 +6,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import de.jbee.data.DataProperty.ObjectProperty;
-import de.jbee.data.DataProperty.RangeProperty;
-import de.jbee.data.DataProperty.ValueProperty;
+import de.jbee.data.Dataset.MemberProperty;
+import de.jbee.data.Dataset.ValueProperty;
 
 public class Template<T>
 		implements Component<T> {
@@ -34,12 +33,12 @@ public class Template<T>
 		}
 
 		// man erkennt ja am markup, ob es nur ein leers platzhalter-tag ist (ersetzen) oder es inhalt gibt (davon ausgehen, dass die component das berücksichtigt
-		public <V> ComponentBinder<V> using( ObjectProperty<? super T, V> path ) {
+		public <V> ComponentBinder<V> using( MemberProperty<? super T, V> path ) {
 
 			return null;
 		}
 
-		public <V> ListComponentBinder<V> listing( RangeProperty<? super T, V> path ) {
+		public <V> ListComponentBinder<V> listing( MemberProperty<? super T, V> path ) {
 			return null;
 		}
 

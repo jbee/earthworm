@@ -1,8 +1,8 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.data.Data;
+import de.jbee.data.Dataset;
 
 public interface Conditional<T> {
 
-	boolean fulfilledBy( Data<? extends T> data );
+	boolean fulfilledBy( Dataset<? extends T> data );
 }

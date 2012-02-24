@@ -1,7 +1,7 @@
 package de.jbee.earthworm.module;
 
-import de.jbee.data.Data;
-import de.jbee.data.DataProperty.ValueProperty;
+import de.jbee.data.Dataset;
+import de.jbee.data.Dataset.ValueProperty;
 
 public class Fulfills {
 
@@ -35,7 +35,7 @@ public class Fulfills {
 		}
 
 		@Override
-		public boolean fulfilledBy( Data<? extends T> data ) {
+		public boolean fulfilledBy( Dataset<? extends T> data ) {
 			return data.value( path ) == expected;
 		}
 	}
