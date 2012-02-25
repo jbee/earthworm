@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.jbee.data.Dataset;
-import de.jbee.data.Dataset.MemberProperty;
+import de.jbee.data.Dataset.RecordProperty;
 import de.jbee.data.Dataset.ValueProperty;
 import de.jbee.earthworm.process.ControlCycle;
 
@@ -34,7 +34,7 @@ public final class BasePreparationCycle<T>
 	}
 
 	@Override
-	public <V> void prepare( MemberProperty<? super T, V> path, Component<V> component ) {
+	public <V> void prepare( RecordProperty<? super T, V> path, Component<V> component ) {
 		BasePreparationCycle<V> componentCycle = new BasePreparationCycle<V>();
 		append( BaseMarkup.partial( path, componentCycle.container ) );
 		component.prepare( componentCycle );

@@ -1,7 +1,7 @@
 package de.jbee.earthworm.module;
 
 import de.jbee.data.Dataset;
-import de.jbee.data.Dataset.MemberProperty;
+import de.jbee.data.Dataset.RecordProperty;
 import de.jbee.data.Dataset.ValueProperty;
 import de.jbee.earthworm.process.ControlCycle;
 import de.jbee.earthworm.process.MarkupCycle;
@@ -23,7 +23,7 @@ public final class BaseMarkup {
 		return new StaticMarkup( markup );
 	}
 
-	public static <T, V> RenderInstructor<T> partial( MemberProperty<? super T, V> path,
+	public static <T, V> RenderInstructor<T> partial( RecordProperty<? super T, V> path,
 			RenderInstructor<V> part ) {
 		return new PartialMarkup<T, V>( path, part );
 	}
@@ -33,7 +33,7 @@ public final class BaseMarkup {
 		return new ConditionalMarkup<T>( condition, markup );
 	}
 
-	public static <T, E> RenderInstructor<T> repeat( MemberProperty<T, E> path,
+	public static <T, E> RenderInstructor<T> repeat( RecordProperty<T, E> path,
 			RenderInstructor<E> element ) {
 		return new RepeatingMarkup<T, E>( path, element );
 	}
@@ -157,10 +157,10 @@ public final class BaseMarkup {
 	static final class RepeatingMarkup<T, E>
 			implements RenderInstructor<T> {
 
-		private final MemberProperty<T, E> path;
+		private final RecordProperty<T, E> path;
 		private final RenderInstructor<E> item;
 
-		RepeatingMarkup( MemberProperty<T, E> path, RenderInstructor<E> item ) {
+		RepeatingMarkup( RecordProperty<T, E> path, RenderInstructor<E> item ) {
 			super();
 			this.path = path;
 			this.item = item;
@@ -168,7 +168,7 @@ public final class BaseMarkup {
 
 		@Override
 		public void instructRendering( Dataset<? extends T> data, ControlCycle cycle ) {
-			cycle.repeat( data.member( path ), item );
+			cycle.repeat( data.record( path ), item );
 		}
 
 		@Override
@@ -180,10 +180,10 @@ public final class BaseMarkup {
 	static class PartialMarkup<T, V>
 			implements RenderInstructor<T> {
 
-		private final MemberProperty<? super T, V> path;
+		private final RecordProperty<? super T, V> path;
 		private final RenderInstructor<V> part;
 
-		PartialMarkup( MemberProperty<? super T, V> path, RenderInstructor<V> part ) {
+		PartialMarkup( RecordProperty<? super T, V> path, RenderInstructor<V> part ) {
 			super();
 			this.path = path;
 			this.part = part;
@@ -191,7 +191,7 @@ public final class BaseMarkup {
 
 		@Override
 		public void instructRendering( Dataset<? extends T> data, ControlCycle cycle ) {
-			part.instructRendering( data.member( path ), cycle );
+			part.instructRendering( data.record( path ), cycle );
 		}
 
 		@Override
