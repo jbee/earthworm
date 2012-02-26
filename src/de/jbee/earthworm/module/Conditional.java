@@ -4,5 +4,5 @@ import de.jbee.data.Dataset;
 
 public interface Conditional<T> {
 
-	boolean fulfilledBy( Dataset<? extends T> data );
+	boolean fulfilledBy( Dataset<? extends T> dataset );
 }

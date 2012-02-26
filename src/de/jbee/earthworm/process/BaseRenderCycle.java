@@ -3,13 +3,13 @@ package de.jbee.earthworm.process;
 import java.util.LinkedList;
 
 import de.jbee.data.Dataset;
-import de.jbee.data.Property;
 import de.jbee.data.Dataset.ValueProperty;
 import de.jbee.earthworm.module.BaseMarkup;
 import de.jbee.earthworm.module.Conditional;
 import de.jbee.earthworm.module.Markup;
 import de.jbee.earthworm.module.RenderInstructor;
 import de.jbee.lang.List;
+import de.jbee.lang.Sequence;
 
 public class BaseRenderCycle
 		implements MarkupCycle, ControlCycle {
@@ -57,8 +57,8 @@ public class BaseRenderCycle
 	}
 
 	@Override
-	public <T, V> V read( Dataset<? extends T> data, ValueProperty<? super T, ? extends V> path ) {
-		return data.value( path );
+	public <T, V> V read( Dataset<? extends T> dataset, ValueProperty<? super T, ? extends V> value ) {
+		return dataset.value( value );
 	}
 
 	@Override
@@ -67,9 +67,9 @@ public class BaseRenderCycle
 	}
 
 	@Override
-	public <T> void repeat( Dataset<T> data, RenderInstructor<? super T> content ) {
+	public <T> void repeat( Sequence<Dataset<T>> items, RenderInstructor<? super T> content ) {
 		counters.addFirst( 1 );
-		for ( Dataset<T> e : List.iterate.forwards( data.items( Property.<T> each() ) ) ) {
+		for ( Dataset<T> e : List.iterate.forwards( items ) ) {
 			//FIXME provide counter also in data
 			cycle.instruct( e, content );
 			counters.set( 0, counters.get( 0 ) );

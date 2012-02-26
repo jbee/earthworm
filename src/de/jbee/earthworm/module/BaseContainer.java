@@ -1,14 +1,15 @@
 package de.jbee.earthworm.module;
 
 import de.jbee.data.Dataset;
-import de.jbee.data.Dataset.RecordProperty;
+import de.jbee.data.Dataset.ItemProperty;
+import de.jbee.data.Dataset.Items;
 import de.jbee.earthworm.process.BaseRecoveryStrategy;
 import de.jbee.earthworm.process.ControlCycle;
 import de.jbee.earthworm.process.RecoveryStrategy;
 
 public class BaseContainer {
 
-	public static <T, E> Container<T, E> repeats( RecordProperty<T, E> path ) {
+	public static <T, E> Container<T, E> repeats( ItemProperty<T, Items<E>> path ) {
 		return new RepeatingContainer<T, E>( path );
 	}
 
@@ -27,9 +28,9 @@ public class BaseContainer {
 	static final class RepeatingContainer<T, E>
 			implements Container<T, E> {
 
-		private final RecordProperty<T, E> path;
+		private final ItemProperty<T, Items<E>> path;
 
-		RepeatingContainer( RecordProperty<T, E> path ) {
+		RepeatingContainer( ItemProperty<T, Items<E>> path ) {
 			super();
 			this.path = path;
 		}

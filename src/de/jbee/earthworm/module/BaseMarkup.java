@@ -1,6 +1,8 @@
 package de.jbee.earthworm.module;
 
 import de.jbee.data.Dataset;
+import de.jbee.data.Dataset.ItemProperty;
+import de.jbee.data.Dataset.Items;
 import de.jbee.data.Dataset.RecordProperty;
 import de.jbee.data.Dataset.ValueProperty;
 import de.jbee.earthworm.process.ControlCycle;
@@ -33,7 +35,7 @@ public final class BaseMarkup {
 		return new ConditionalMarkup<T>( condition, markup );
 	}
 
-	public static <T, E> RenderInstructor<T> repeat( RecordProperty<T, E> path,
+	public static <T, E> RenderInstructor<T> repeat( ItemProperty<T, Items<E>> path,
 			RenderInstructor<E> element ) {
 		return new RepeatingMarkup<T, E>( path, element );
 	}
@@ -100,8 +102,8 @@ public final class BaseMarkup {
 		}
 
 		@Override
-		public void render( Dataset<? extends T> data, MarkupCycle cycle ) {
-			cycle.stream().append( cycle.read( data, path ) );
+		public void render( Dataset<? extends T> dataset, MarkupCycle cycle ) {
+			cycle.stream().append( cycle.read( dataset, path ) );
 		}
 
 		@Override
@@ -121,7 +123,7 @@ public final class BaseMarkup {
 		}
 
 		@Override
-		public void render( Dataset<? extends Object> data, MarkupCycle cycle ) {
+		public void render( Dataset<? extends Object> dataset, MarkupCycle cycle ) {
 			cycle.stream().append( markup );
 		}
 
@@ -157,10 +159,10 @@ public final class BaseMarkup {
 	static final class RepeatingMarkup<T, E>
 			implements RenderInstructor<T> {
 
-		private final RecordProperty<T, E> path;
+		private final ItemProperty<T, Items<E>> path;
 		private final RenderInstructor<E> item;
 
-		RepeatingMarkup( RecordProperty<T, E> path, RenderInstructor<E> item ) {
+		RepeatingMarkup( ItemProperty<T, Items<E>> path, RenderInstructor<E> item ) {
 			super();
 			this.path = path;
 			this.item = item;
@@ -168,7 +170,7 @@ public final class BaseMarkup {
 
 		@Override
 		public void instructRendering( Dataset<? extends T> data, ControlCycle cycle ) {
-			cycle.repeat( data.record( path ), item );
+			cycle.repeat( data.items( path ), item );
 		}
 
 		@Override

@@ -4,6 +4,7 @@ import de.jbee.data.Dataset;
 import de.jbee.earthworm.module.Conditional;
 import de.jbee.earthworm.module.Markup;
 import de.jbee.earthworm.module.RenderInstructor;
+import de.jbee.lang.Sequence;
 
 public interface ControlCycle
 		extends RenderCycle {
@@ -12,11 +13,13 @@ public interface ControlCycle
 
 	<T> void instruct( Dataset<T> data, RenderInstructor<? super T> content );
 
-	<T> void instruct( Dataset<T> data, RenderInstructor<? super T> content, RecoveryStrategy strategy );
+	<T> void instruct( Dataset<T> data, RenderInstructor<? super T> content,
+			RecoveryStrategy strategy );
 
-	<T> void repeat( Dataset<T> data, RenderInstructor<? super T> content );
+	<T> void repeat( Sequence<Dataset<T>> items, RenderInstructor<? super T> content );
 
-	<T> void guard( Dataset<T> data, Conditional<? super T> condition, RenderInstructor<? super T> then );
+	<T> void guard( Dataset<T> data, Conditional<? super T> condition,
+			RenderInstructor<? super T> then );
 
 	<T> void upon( Dataset<T> data, Conditional<? super T> condition,
 			RenderInstructor<? super T> then, RenderInstructor<? super T> elSe );

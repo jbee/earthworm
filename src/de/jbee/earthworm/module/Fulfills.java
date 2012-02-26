@@ -35,8 +35,8 @@ public class Fulfills {
 		}
 
 		@Override
-		public boolean fulfilledBy( Dataset<? extends T> data ) {
-			return data.value( path ) == expected;
+		public boolean fulfilledBy( Dataset<? extends T> dataset ) {
+			return dataset.value( path ) == expected;
 		}
 	}
 }

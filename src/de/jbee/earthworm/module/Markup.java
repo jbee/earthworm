@@ -30,5 +30,5 @@ import de.jbee.earthworm.process.MarkupStream;
  */
 public interface Markup<T> {
 
-	void render( Dataset<? extends T> data, MarkupCycle cycle );
+	void render( Dataset<? extends T> dataset, MarkupCycle cycle );
 }

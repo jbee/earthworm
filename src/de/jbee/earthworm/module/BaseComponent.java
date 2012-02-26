@@ -1,5 +1,7 @@
 package de.jbee.earthworm.module;
 
+import de.jbee.data.Dataset.ItemProperty;
+import de.jbee.data.Dataset.Items;
 import de.jbee.data.Dataset.RecordProperty;
 
 public final class BaseComponent {
@@ -16,7 +18,8 @@ public final class BaseComponent {
 		return new PartialComponent<T, E>( path, part );
 	}
 
-	public static <T, E> Component<T> repeats( RecordProperty<? super T, E> path, Component<E> item ) {
+	public static <T, E> Component<T> repeats( ItemProperty<? super T, Items<E>> path,
+			Component<E> item ) {
 		return new RepeatingComponent<T, E>( path, item );
 	}
 
@@ -64,10 +67,10 @@ public final class BaseComponent {
 	static final class RepeatingComponent<T, E>
 			implements Component<T> {
 
-		final RecordProperty<? super T, E> path;
+		final ItemProperty<? super T, Items<E>> path;
 		final Component<E> item;
 
-		RepeatingComponent( RecordProperty<? super T, E> path, Component<E> element ) {
+		RepeatingComponent( ItemProperty<? super T, Items<E>> path, Component<E> element ) {
 			super();
 			this.path = path;
 			this.item = element;

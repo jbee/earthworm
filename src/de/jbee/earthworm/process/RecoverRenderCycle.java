@@ -6,6 +6,7 @@ import de.jbee.earthworm.module.Conditional;
 import de.jbee.earthworm.module.Markup;
 import de.jbee.earthworm.module.RenderInstructor;
 import de.jbee.lang.List;
+import de.jbee.lang.Sequence;
 
 public class RecoverRenderCycle
 		implements ControlCycle {
@@ -50,8 +51,8 @@ public class RecoverRenderCycle
 	}
 
 	@Override
-	public <T, V> V read( Dataset<? extends T> data, ValueProperty<? super T, ? extends V> path ) {
-		return cycle.read( data, path );
+	public <T, V> V read( Dataset<? extends T> dataset, ValueProperty<? super T, ? extends V> value ) {
+		return cycle.read( dataset, value );
 	}
 
 	@Override
@@ -60,8 +61,8 @@ public class RecoverRenderCycle
 	}
 
 	@Override
-	public <T> void repeat( Dataset<T> data, RenderInstructor<? super T> content ) {
-		cycle.repeat( data, content );
+	public <T> void repeat( Sequence<Dataset<T>> items, RenderInstructor<? super T> content ) {
+		cycle.repeat( items, content );
 	}
 
 	@Override

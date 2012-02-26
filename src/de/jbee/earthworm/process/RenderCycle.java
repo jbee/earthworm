@@ -7,7 +7,7 @@ public interface RenderCycle {
 
 	<T> T util( UtilFactory<T> factory );
 
-	<T, V> V read( Dataset<? extends T> data, ValueProperty<? super T, ? extends V> path );
+	<T, V> V read( Dataset<? extends T> dataset, ValueProperty<? super T, ? extends V> value );
 
 	RenderStream stream();
 }

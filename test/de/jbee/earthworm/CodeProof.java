@@ -1,5 +1,7 @@
 package de.jbee.earthworm;
 
+import de.jbee.data.Dataset.ItemProperty;
+import de.jbee.data.Dataset.Items;
 import de.jbee.data.Dataset.RecordProperty;
 import de.jbee.data.Dataset.ValueProperty;
 import de.jbee.earthworm.module.Attribute;
@@ -32,7 +34,7 @@ public class CodeProof {
 		ValueProperty<Track, Integer> number = null;
 		ValueProperty<Track, String> title = null;
 		ValueProperty<Track, Long> length = null;
-		RecordProperty<Track, Artist> artists = null;
+		ItemProperty<Track, Items<Artist>> artists = null;
 	}
 
 	static interface Artist {
